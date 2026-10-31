@@ -58,10 +58,13 @@ Copy-Item config/agents.example.yaml config/agents.yaml
 macOS/Linux :
 ```bash
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 cp .env.example .env
 cp config/agents.example.yaml config/agents.yaml
 ```
+
+Si `.env` ou `config/agents.yaml` existe déjà, ne recopiez pas le fichier correspondant :
+cela pourrait remplacer votre configuration locale.
 
 ## Configuration
 
