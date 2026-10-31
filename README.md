@@ -1,6 +1,6 @@
 # AgentRelay
 
-**Orchestrez vos agents de dev (Claude Code, Codex, OpenCode) sans jamais perdre le fil du travail.**
+**MVP : orchestrez Claude Code, Codex et OpenCode en préservant le contexte de travail.**
 
 Vous codez avec Claude Code et vous atteignez la limite ? Vous aimeriez enchaîner une tâche avec Codex puis OpenCode selon leurs forces ? AgentRelay s'occupe de tout :
 
@@ -31,33 +31,47 @@ Vous codez avec Claude Code et vous atteignez la limite ? Vous aimeriez enchaîn
 
 | Fonctionnalité | Statut |
 |---|---|
-| Orchestration multi-agents (Claude Code, Codex, OpenCode) | ✅ |
-| Décision automatique par le cerveau (Gemma) | ✅ |
-| Mode manuel ou automatique | ✅ |
-| Handoff via `AGENTS.md` / `CLAUDE.md` | ✅ |
-| Dashboard web en temps réel | ✅ |
-| Historique complet des bascules | ✅ |
-| Ajout d'un agent par simple YAML | ✅ |
-| Lancement automatique des agents (subprocess) | ⚠️ expérimental |
+| Orchestration multi-agents et handoff par fichiers | MVP |
+| Décision Gemma avec repli manuel si indisponible | MVP |
+| CLI et API FastAPI | MVP |
+| Dashboard local | MVP |
+| Mode automatique via commandes configurées | Expérimental |
 
 ## Installation
 
-Prérequis : Python 3.11+, Node.js (pour le dashboard), au moins un agent de dev installé.
+Prérequis : Python 3.11+ ; un agent installé uniquement pour le mode auto.
 
 ```bash
 git clone https://github.com/<votre-equipe>/agentrelay.git
 cd agentrelay
 python -m venv .venv
+```
+
+Windows PowerShell :
+```powershell
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+Copy-Item config/agents.example.yaml config/agents.yaml
+```
+
+macOS/Linux :
+```bash
 source .venv/bin/activate
 pip install -r requirements.txt
+cp .env.example .env
+cp config/agents.example.yaml config/agents.yaml
 ```
 
 ## Configuration
 
 ```bash
-cp .env.example .env            # mettez votre GEMMA_API_KEY
-cp config/agents.example.yaml config/agents.yaml
+ # Ouvrez .env et renseignez GEMMA_API_KEY avec votre clé Google AI Studio.
 ```
+
+Ouvrez `.env` et renseignez `GEMMA_API_KEY=votre_nouvelle_cle`. Le fichier `.env`
+reste local et ne doit jamais être ajouté à Git. La clé partagée précédemment
+dans le chat doit être révoquée avant d'utiliser une nouvelle clé.
 
 Chaque agent est défini par :
 ```yaml
@@ -83,18 +97,14 @@ agentrelay next --output-text "voici ce que j'ai fait..."
 # Voir où on en est
 agentrelay status
 
-# Lancer le dashboard
+# Lancer le serveur et le dashboard sur http://127.0.0.1:8000
 agentrelay serve --port 8000
 ```
 
 ## Dashboard
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Ouvrez `http://localhost:5173`.
+Le dashboard est servi directement par le serveur à `http://127.0.0.1:8000`.
+L’API est disponible sous `/api/` et sa documentation interactive à `/docs`.
 
 ## Comment ça marche
 
@@ -116,17 +126,16 @@ agentrelay/
   context.py       # état & handoff
   agents.py        # adaptateurs par agent
   logger.py        # logs colorés
-frontend/          # dashboard React (Lovable)
+frontend/          # dashboard autonome
 config/            # agents.yaml
 tests/             # pytest
 ```
 
-## Feuille de route
+## Limites actuelles
 
-- Hooks natifs pour chaque agent (plus besoin de `agentrelay next` manuel)
-- Détection auto de la fin d'un agent
-- Reprise à chaud en cas de crash
-- Apprentissage du cerveau sur les sessions passées
+- En mode manuel, l’utilisateur lance l’agent et fournit son résultat à `agentrelay next`.
+- Le mode auto exécute la commande configurée de façon bloquante ; détection de fin via code retour.
+- L’API est prévue pour un usage local. Ne l’exposez pas sur un réseau public sans authentification.
 
 ## Contribuer
 

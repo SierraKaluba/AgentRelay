@@ -1,0 +1,24 @@
+agents:
+  claude-code:
+    description: Strong at architecture and complex reasoning
+    launch_cmd: claude
+    context_file: CLAUDE.md
+  codex:
+    description: Strong at focused code changes and implementation
+    launch_cmd: codex
+    context_file: AGENTS.md
+  opencode:
+    description: Multi-provider coding agent for varied tasks
+    launch_cmd: opencode
+    context_file: AGENTS.md
+
+brain:
+  provider: gemma
+  base_url: https://generativelanguage.googleapis.com/v1beta/openai
+  api_key_env: GEMMA_API_KEY
+  model: gemma-3-27b-it
+  timeout: 30
+  max_input_chars: 6000
+
+mode_default: manual
+max_steps: 10
