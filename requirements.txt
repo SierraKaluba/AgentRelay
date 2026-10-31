@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+httpx
+pyyaml
+python-dotenv
+click
+pytest

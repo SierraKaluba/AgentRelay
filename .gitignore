@@ -1,0 +1,26 @@
+# Secrets et config locale
+.env
+config/agents.yaml
+
+# Généré à l'exécution
+.agentrelay/
+AGENTS.md
+CLAUDE.md
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+
+# Node (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Éditeurs / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
